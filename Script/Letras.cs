@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-   //https://www.youtube.com/watch?v=EohhGbRgNds
+//https://www.youtube.com/watch?v=EohhGbRgNds
+//necessario boxcollider
 [RequireComponent(typeof(Rigidbody2D))]
 public class Letras : MonoBehaviour //FUNCIONA APENAS COM CAMERA ORTOGRAFICAS
 {
@@ -22,8 +23,8 @@ public class Letras : MonoBehaviour //FUNCIONA APENAS COM CAMERA ORTOGRAFICAS
     [Space(10)] //seoarar as variaveis no inspectro
     public Transform conector;
 
-    [Range(0.1f,2f)]
-    public float distanciaMinimaConector = 0.5f;
+    [Range(1.0f,2.0f)]
+    public float distanciaMinimaConector = 1.0f;
     bool Arratando;
 
     void Start() {
@@ -44,10 +45,25 @@ public class Letras : MonoBehaviour //FUNCIONA APENAS COM CAMERA ORTOGRAFICAS
          vetorDirecao = posDestino - transform.root.position;
          _rigidbody2D.velocity = vetorDirecao * velocidadeMov;
     }
-    private void OnMouseUp()
+
+    void OnMouseUp()
     {
         _rigidbody2D.gravityScale = 1;
         estaArrastando = false;        
     }
-
+    void FixedUpdate()
+    {
+        if(!estaArrastando && !estaConectado){
+            distancia = Vector2.Distance(transform.root.position, conector.position);
+            if(distancia < distanciaMinimaConector){
+                _rigidbody2D.gravityScale = 0;
+                _rigidbody2D.velocity = Vector2.zero;
+                transform.root.position = Vector2.MoveTowards(transform.root.position, conector.position, 0.05f); // nao precisa de delta time pq nao esta na void updade 
+            }
+            if(distancia < 0.01f){
+                estaConectado = true;
+                transform.root.position = conector.position;
+            }
+        }
+    }
 }
