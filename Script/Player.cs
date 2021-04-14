@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Teste : MonoBehaviour
+public class Player : MonoBehaviour
 {  public float Speed;
     public float JumpForce;
 
@@ -61,7 +61,7 @@ public class Teste : MonoBehaviour
         if(collision.gameObject.tag == "parede")
         {
            //Destroy(gameObject, 0f);
-           myObject.SetActive(false);
+           //myObject.SetActive(false);
         }
     }
 }
